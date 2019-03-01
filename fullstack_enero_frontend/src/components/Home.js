@@ -20,7 +20,7 @@ class Home extends React.Component {
         let url = "http://localhost:3000/private"
         axios.get(url, { withCredentials: true })
             .then(res => {
-                console.log(res)
+                
                 this.setState({ privateInfo: res.data, authorized: true })
             })
             .catch(e => {
@@ -34,8 +34,12 @@ class Home extends React.Component {
     }
 
     handleSubmit = () => {
+        const { privateInfo } = this.state
         this.subeImagen(this.state.profilePic, url)
-            .then(res => this.setState({profilePic: res.profilePic}))
+            .then(res => {
+                privateInfo.photo = res.profilePic
+                this.setState({ privateInfo })
+            })
     }
 
     subeImagen = (file, url) => {
@@ -51,6 +55,7 @@ class Home extends React.Component {
 
     render() {
         let { privateInfo } = this.state
+        console.log(privateInfo)
         if(this.state.authorized) {
             return(
                 <div>
